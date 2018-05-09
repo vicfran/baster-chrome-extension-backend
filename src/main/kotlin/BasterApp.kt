@@ -35,8 +35,9 @@ fun main(args: Array<String>) {
 private fun initRouting(): Routing.() -> Unit {
     return {
         post ("/") {
-            val params = call.receive<ProfileEntity>()
-            call.respondText { params.body }
+            val profileEntity = call.receive<ProfileEntity>()
+            val profile = Scraper().scrap(profileEntity)
+            call.respondText { "Hola " + profile.name + "!" }
         }
     }
 }
