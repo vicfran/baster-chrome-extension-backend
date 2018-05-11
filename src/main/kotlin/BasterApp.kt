@@ -36,8 +36,8 @@ private fun initRouting(): Routing.() -> Unit {
     return {
         post ("/") {
             val profileEntity = call.receive<ProfileEntity>()
-            val profile = Scraper().scrap(profileEntity)
-            call.respondText { "Hola " + profile.name + "!" }
+            val profile = ProfileScraper().scrap(profileEntity)
+            call.respondText { profile.toString() }
         }
     }
 }
