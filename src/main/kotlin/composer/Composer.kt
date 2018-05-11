@@ -1,26 +1,31 @@
 package baster
 
+import composer.template.Body
+import composer.template.Template
 import model.Profile
 
 class Composer {
 
     companion object {
         private const val START = "Hola"
-        private const val INTRO_1 = "Tu trabajo en"
-        private const val INTRO_1_1 = "me ha llamado la atención y me gustaría hablar contigo"
-        private const val INTRO_2 = "Me llama la atención tus conocimientos en"
-        private const val INTRO_2_1 = "y que incluso"
-        private const val INTRO_2_2_PLURAL = "personas lo certifican, ¡enhorabuena!"
-        private const val INTRO_2_2_SINGULAR = "persona lo certifica, ¡enhorabuena!"
-        private const val INTRO_3 = "Además, me gustaría conocer cómo fue tu experiencia trabajando en"
-        private const val INTRO_3_1 = "como"
-        private const val INTRO_4 = "He visto en tu perfil que tienes"
-        private const val INTRO_4_1 = "recomendaciones, esas personas con las que has trabajado valoran positivamente tu trabajo y eso es algo genial"
-        private const val BODY_1 = "Es posible que hayas notado mi interés en tu perfil"
-        private const val BODY_2 = "¿Te gustaría hacer un cambio en tu carrera?"
-        private const val BODY_3 = "¿Te gustaría saber un poco más sobre el puesto?"
-        private const val FINAL_1 = "Si el momento no es adecuado lo entendería perfectamente"
+
+        private const val BODY_1 = "Tu trabajo en"
+        private const val BODY_1_1 = "me ha llamado la atención y me gustaría hablar contigo"
+
+        private const val BODY_2 = "Me llama la atención tus conocimientos en"
+        private const val BODY_2_1 = "y que incluso"
+        private const val BODY_2_2_PLURAL = "personas lo certifican, ¡enhorabuena!"
+        private const val BODY_2_2_SINGULAR = "persona lo certifica, ¡enhorabuena!"
+
+        private const val BODY_3 = "Además, me gustaría conocer cómo fue tu experiencia trabajando en"
+        private const val BODY_3_1 = "como"
+
+        private const val BODY_4 = "He visto en tu perfil que tienes"
+        private const val BODY_4_1 = "recomendaciones, esas personas con las que has trabajado valoran positivamente tu trabajo y eso es algo genial"
+
+        private const val FINAL_1 = "¿Te gustaría hacer un cambio en tu carrera?"
         private const val FINAL_2 = "Dime cuando tengas un momento"
+
         private const val END = "Muchas gracias"
 
         private const val SPACE = " "
@@ -28,49 +33,67 @@ class Composer {
         private const val END_LINE = "\n\n"
     }
 
-    fun compose(profile: Profile): String {
-        var template = START + SPACE
+    fun compose(profile: Profile): Template {
+        val start = composeStart(profile)
+        val body = composeBody(profile)
+        val end = composeEnd()
+
+        return Template(start, body, end)
+    }
+
+    private fun composeStart(profile: Profile): String {
+        var start = START + SPACE
 
         if (profile.hasName()) {
-            template += profile.name + END_LINE
+            start += profile.name + END_LINE
         }
 
+        return start
+    }
+
+    private fun composeBody(profile: Profile): Body {
+        var body = mutableListOf<String>()
+
         if (profile.hasExperiences()) {
-            template += INTRO_1 + SPACE + profile.experiences[0].company + SPACE + INTRO_1_1 + DOT + END_LINE
+            body.add(BODY_1 + SPACE + profile.experiences[0].company + SPACE + BODY_1_1 + DOT + END_LINE)
 
             if (profile.experiences.size > 1) {
                 val experience = profile.experiences[1]
-                template += INTRO_3 + SPACE + experience.company + SPACE + INTRO_3_1 + SPACE + experience.position + DOT + END_LINE
+                body.add(BODY_3 + SPACE + experience.company + SPACE + BODY_3_1 + SPACE + experience.position + DOT + END_LINE)
             }
         }
 
         if (profile.hasRecommendations()) {
-            template += INTRO_4 + SPACE + profile.recommendations + SPACE + INTRO_4_1 + DOT + END_LINE
+            body.add(BODY_4 + SPACE + profile.recommendations + SPACE + BODY_4_1 + DOT + END_LINE)
         }
 
         if (profile.hasAptitudes()) {
             val aptitude = profile.aptitudes[0]
-            template += INTRO_2 + SPACE + aptitude.name
+            body.add(BODY_2 + SPACE + aptitude.name)
             if (aptitude.hasValidations()) {
-                template += SPACE + INTRO_2_1 + SPACE + aptitude.validations + SPACE
-                template += if (aptitude.validations.toInt() > 1) {
-                    INTRO_2_2_PLURAL
+                body.add(SPACE + BODY_2_1 + SPACE + aptitude.validations + SPACE)
+                body.add(if (aptitude.validations.toInt() > 1) {
+                    BODY_2_2_PLURAL
                 } else {
-                    INTRO_2_2_SINGULAR
-                }
-                template += DOT + END_LINE
+                    BODY_2_2_SINGULAR
+                })
+                body.add(DOT + END_LINE)
             } else {
-                template += DOT + END_LINE
+                body.add(DOT + END_LINE)
             }
         }
 
-        template += BODY_2 + END_LINE
+        return Body(body)
+    }
 
-        template += FINAL_2 + DOT + END_LINE
+    private fun composeEnd(): String {
+        var end = FINAL_1 + END_LINE
 
-        template += END
+        end += FINAL_2 + DOT + END_LINE
 
-        return template
+        end += END
+
+        return end
     }
 
 }
