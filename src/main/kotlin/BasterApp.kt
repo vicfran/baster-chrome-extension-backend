@@ -37,7 +37,7 @@ private fun initRouting(): Routing.() -> Unit {
         post ("/") {
             val profileEntity = call.receive<ProfileEntity>()
             val profile = ProfileScraper().scrap(profileEntity)
-            call.respondText { Parser().parse(profile).toString() }
+            call.respondText { Composer().compose(Parser().parse(profile)) }
         }
     }
 }

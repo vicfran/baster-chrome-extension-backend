@@ -7,7 +7,14 @@ data class Profile(
         val location: String = "",
         val experiences: List<Experience> = emptyList(),
         val aptitudes: List<Aptitude> = emptyList(),
-        val recommendations: String = "")
+        val recommendations: String = "") {
+
+    fun hasName() = name.isNotEmpty()
+    fun hasExperiences() = experiences.isNotEmpty()
+    fun hasAptitudes() = aptitudes.isNotEmpty()
+    fun hasRecommendations() = recommendations.isNotEmpty() && !"0".equals(recommendations)
+
+}
 
 data class Experience(
         val position: String = "",
@@ -20,4 +27,8 @@ data class Experience(
 data class Aptitude(
         val name: String = "",
         val validations: String = ""
-)
+) {
+
+    fun hasValidations() = validations.isNotEmpty()
+
+}

@@ -9,6 +9,7 @@ class Parser {
         with (profile) {
             val name = if (name.isNotEmpty()) name.split(" ")[0] else ""
             val position = position.toLowerCase()
+            val company = company.toLowerCase()
             val location = if (location.isNotEmpty()) location.split(" ")[0] else ""
             val experiences = parseExperiences(experiences)
             val recommendations = parseRecommendations(recommendations)
