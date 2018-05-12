@@ -1,6 +1,6 @@
 package composer.template
 
-data class Body(private var parts: List<String>) {
+data class Body(val parts: List<String>) {
 
     fun get(): String = parts.joinToString("")
 

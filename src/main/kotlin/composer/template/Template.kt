@@ -1,6 +1,6 @@
 package composer.template
 
-data class Template(private var start: String, private var body: Body, private var end: String) {
+data class Template(val start: String, val body: Body, val end: String) {
 
     fun get(): String = start + body.get() + end
 
