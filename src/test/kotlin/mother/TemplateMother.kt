@@ -3,7 +3,7 @@ package baster
 import composer.template.Body
 import composer.template.Template
 
-class TemplatesMother {
+class TemplateMother {
 
     fun getFullProfileTemplate(): Template =
             Template(
